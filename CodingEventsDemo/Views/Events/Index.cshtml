@@ -1,8 +1,19 @@
 ﻿<h1>Coding Events</h1>
 
-<ul>
-    @foreach (string meeting in ViewBag.events)
-    {
-        <li>@meeting</li>
-    }
-</ul>
+   <table>
+      <tr>
+         <th>
+            Name
+         </th>
+         <th>
+            Description
+         </th>
+      </tr>    
+      @foreach (KeyValuePair<string, string> evt in ViewBag.events)
+      {
+         <tr>
+            <td>@evt.Key</td>
+            <td>@evt.Value</td>
+         </tr>
+      }
+</table>
