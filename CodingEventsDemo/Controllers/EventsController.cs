@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using CodingEventsDemo.Data;
+using CodingEventsDemo.Models;
 using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -12,16 +14,11 @@ namespace coding_events_practice.Controllers
     {
         // GET: /<controller>/
 
-        private static Dictionary<string, string> Events = new Dictionary<string, string>();
+        private static List<Event> Events = new  List<Event>();
 
         public IActionResult Index()
         {
-
-            Events.Add("Code With Pride", "Code With Pride");
-            Events.Add("Apple WWDC", "Apple WWDC");
-            Events.Add("Strange Loop", "Strange Loop");
-
-            ViewBag.events = Events;
+            ViewBag.Events = EventData.GetAll();
 
             return View();
         }
@@ -33,10 +30,48 @@ namespace coding_events_practice.Controllers
 
         [HttpPost]
         [Route("Events/Add")]
-        public IActionResult NewEvent(string name, string desc)
+        public IActionResult NewEvent(Event newEvent)
         {
-            Events.Add(name, desc);
+            EventData.Add(newEvent);
 
+            return Redirect("/Events");
+        }
+
+        public IActionResult Delete()
+        {
+            ViewBag.events = EventData.GetAll();
+
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult Delete(int[] eventIds)
+        {
+            foreach (int eventId in eventIds)
+            {
+                EventData.Remove(eventId);
+            }
+
+            return Redirect("/Events");
+        }
+
+        [Route("Events/Edit/{eventId:int}")]
+        public IActionResult Edit(int eventId)
+        {
+            // controller code will go here
+            ViewBag.Event = EventData.GetById(eventId);
+            return View();
+        }
+
+
+        [HttpPost]
+        [Route("Events/Edit")]
+        public IActionResult SubmitEditEventForm(int eventId, string name, string description)
+        {
+            // controller code will go here
+            Event editEvent = EventData.GetById(eventId);
+            editEvent.Name = name;
+            editEvent.Description = description;
             return Redirect("/Events");
         }
     }
