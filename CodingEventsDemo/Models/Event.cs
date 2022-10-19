@@ -6,6 +6,9 @@ namespace CodingEventsDemo.Models
     {
         public string Name { get; set; }
         public string Description { get; set; }
+        public string Location { get; set; }
+        public int NumberOfAttendees { get; set; }
+        public int MustRegister{ get; set; }
         public int  Id { get; }
         private static int nextId = 1;
         public Event()
@@ -13,12 +16,13 @@ namespace CodingEventsDemo.Models
             Id = nextId;
             nextId++;
         }
-        public Event(string name, string description) : this()
+        public Event(string name, string description, string location, int numberOfAttendees, int mustRegister) : this()
         {
             Name = name;
             Description = description;
-
-
+            Location = location;
+            NumberOfAttendees = numberOfAttendees;
+            MustRegister= mustRegister;
         }
 
 
